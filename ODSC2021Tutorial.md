@@ -95,7 +95,12 @@ What kind of data do we need? - 2
     - Data without ethical concerns such as using data without consent, keeping personally identifiable information, racial/gender bias in training examples etc. (Why is this important?)
     - Variety: Data that is of the same kind as our end use case (e.g., legal docs for legal use cases) (Why?) 
     
-How do we obtain such data? - 1
+    
+Collecting, Labeling and Augmenting datasets
+========================================================
+type: section
+    
+How do we obtain labeled data? - 1
 ========================================================
 incremental: true
 
@@ -110,7 +115,7 @@ incremental: true
       - quality control?
     - Note that this is not your most common scenario in real world
       
-How do we obtain such data? - 2
+How do we obtain labeled data? - 2
 ========================================================
 
 collect your own data: surveys, user studies, crowd sourcing etc. 
@@ -120,6 +125,37 @@ collect your own data: surveys, user studies, crowd sourcing etc.
 
 - Advantage: Best suited to our requirements
 - Disadvantage: It can be very expensive/time consuming to get large amounts needed for ML/DL models. 
+
+Label studio-Example
+========================================================
+![label studio](figures/label-studio-1.png)
+
+Label studio-Example
+========================================================
+![label studio](figures/label-studio-2.png)
+
+Label studio-Example
+========================================================
+![label studio](figures/label-studio-3.png)
+
+Label studio-setting things up
+========================================================
+![label studio](figures/label-studio-4.png)
+
+Label studio - export the labeled dataset
+========================================================
+![label studio](figures/label-studio-5.png)
+
+Data labeling with Label Studio - input and output
+========================================================
+![label studio](figures/label-studio-0.png)
+![label studio](figures/label-studio-last.png)
+
+
+Data labeling - conclusion
+========================================================
+- I just showed a simple example, but there are a whole lot of annotation support tools for NLP tasks.
+- [This listing by Doccano](https://github.com/doccano/awesome-annotation-tools) provides a comparison in terms of features, pricing, and the kind of NLP tasks that the tools support. 
 
 Creating more data: Data Augmentation 
 ========================================================
@@ -150,14 +186,15 @@ Back translation
 
 [https://amitness.com/2020/05/data-augmentation-for-nlp/](Source)
 
+<!-- may be add some code examples here? --> 
 
-Modeling with small(-er) datasets 
+
+Modeling with small(-er) datasets: Issues
 ========================================================
+- We can't go too far with small datasets, though. 
 
-- We can't go too far with a small dataset + data augmentation.
-- We need better ways to address this small dataset scenario.
+[http://ai.stanford.edu/blog/weak-supervision](Stanford AI Lab blog)
 
-[source - Stanford AI Lab blog](http://ai.stanford.edu/blog/weak-supervision/)
 ![methods](figures/methods.png)
 
 Active Learning
@@ -207,11 +244,9 @@ A working example
 ========================================================
 - problem: text classification ... sentiment classification
 - why I chose such a common one?
-
 - no data NLP: google cloud example - how good is it on the test sentences?
 - transfer learning - use an existing pre-trained model or sentiment model
 - weak supervision - snorkel
-
 - comparison with a "regular" scenario
 
 
