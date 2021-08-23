@@ -1,4 +1,5 @@
 #adopted from: https://huggingface.co/transformers/custom_datasets.html
+#metrics discussion: https://huggingface.co/course/chapter3/3?fw=pt
 
 import torch
 
@@ -8,6 +9,9 @@ from transformers import DistilBertForSequenceClassification, Trainer, TrainingA
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
+
+import numpy as np
+from datasets import load_metric
 
 #Read the train/test files and extract labels and
 #textual features using the sentence transformers model.
@@ -44,6 +48,12 @@ class IMDbDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.labels)
 
+def compute_metrics(eval_preds):
+    metric = load_metric("accuracy", "f1")
+    logits, labels = eval_preds
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
+
 train_dataset = IMDbDataset(train_encodings, train_labels)
 val_dataset = IMDbDataset(val_encodings, val_labels)
 test_dataset = IMDbDataset(test_encodings, test_labels)
@@ -65,8 +75,15 @@ trainer = Trainer(
     model=model,                         # the instantiated 🤗 Transformers model to be trained
     args=training_args,                  # training arguments, defined above
     train_dataset=train_dataset,         # training dataset
-    eval_dataset=val_dataset             # evaluation dataset
+    eval_dataset=val_dataset,             # evaluation dataset
+    compute_metrics=compute_metrics
 )
 
 trainer.train()
-trainer.predict(test_dataset)
+predictions = trainer.predict(test_dataset)
+print(predictions.predictions.shape, predictions.label_ids.shape)
+preds = np.argmax(predictions.predictions, axis=-1)
+metric =load_metric('accuracy', 'f1')
+print(metric.compute(predictions=preds, references=predictions.label_ids))
+
+
