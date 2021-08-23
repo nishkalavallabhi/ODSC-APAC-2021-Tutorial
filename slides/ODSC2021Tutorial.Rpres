@@ -18,9 +18,14 @@ Tutorial Overview
 ========================================================
 - NLP: Overview
 - Collecting, Labeling and Augmenting datasets
-- Generating annotated data and modeling with it
-- What, next?  
+- Modeling with small datasets: an overview
+- A case study: code walk through  
 - Conclusion
+(I will talk first, show next.)
+
+Code, slides: [https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial](https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial)
+
+These slides: [https://rpubs.com/vbsowmya/odsc2021](https://rpubs.com/vbsowmya/odsc2021)
 
 About Me
 ========================================================
@@ -197,24 +202,61 @@ Modeling with small(-er) datasets: Issues
 
 ![methods](figures/methods.png)
 
-Active Learning
+Weak supervision: an introduction
 ========================================================
-![activelearning](figures/al.png)
+incremental:true
 
-[source: Professor Tom Mitchell's course slides](https://www.cs.cmu.edu/~tom/10701_sp11/recitations/Recitation_13.pdf)
+Generally, most 'learning' methods used in NLP are data hungry. However, it is time consuming and also expensive to hand label so much of data for each new problem. 
 
-Semi-supervised Learning
-========================================================
-![semisupervised](figures/semisup.png)
-[source](https://www.enjoyalgorithms.com/blogs/supervised-unsupervised-and-semisupervised-learning)
+Sometimes, we may have to update existing labels to suit changed guidelines or just update the dataset etc. (not so uncommon in real world). How do we handle the costs/time taken? 
 
-Weak Supervision
+"Weak supervision" refers to a machine learning approach which relies on "imprecise" training data, which is potentially "generated" automatically. 
+
+An approach: write code based on observed patterns in data to label subsets of unlabeled data.... and then use this code to create labeled training data for our ML model
+
+
+"Practical" Weak Supervision -1
 ========================================================
 <img src="figures/weaks.png" alt="weaksupervision" height="500" width="600"/>
 
 [source - skweak Python library](https://github.com/NorskRegnesentral/skweak)
 
-Transfer Learning
+"Practical" Weak Supervision -2
+========================================================
+<img src="figures/snorkelradiologyexample.png" alt="weaksupervision" height="500" width="600"/>
+
+[Source](https://db.cs.washington.edu/events/workshop/2019/slides/alex-ratner.pdf)
+
+How can this work in practice: Snorkel
+========================================================
+<img src="figures/3snorkelops.png" alt="weaksupervision" height="500" width="600"/>
+
+[Source](https://db.cs.washington.edu/events/workshop/2019/slides/alex-ratner.pdf)
+
+Sounds good! Does it really work, though?
+========================================================
+<img src="figures/snorkelrealworld.png" alt="weaksupervision" height="500" width="600"/>
+
+Sounds good! Does it really work, though?
+========================================================
+
+<img src="figures/snorkelwild.png" alt="weaksupervision" height="500" width="600"/>
+
+source: https://www.snorkel.org/resources/
+
+
+Other methods: Active Learning
+========================================================
+![activelearning](figures/al.png)
+
+[source: Professor Tom Mitchell's course slides](https://www.cs.cmu.edu/~tom/10701_sp11/recitations/Recitation_13.pdf)
+
+Other methods: Semi-supervised Learning
+========================================================
+![semisupervised](figures/semisup.png)
+[source](https://www.enjoyalgorithms.com/blogs/supervised-unsupervised-and-semisupervised-learning)
+
+Other methods: Transfer Learning
 ========================================================
 ![transferlearning](figures/tl.png)
 [source - ruder.io](https://ruder.io/transfer-learning/)
@@ -227,18 +269,25 @@ source: Chapter 1 in ["Human-in-the-Loop Machine Learning " by Robert Munro.] (h
 
 Practical Advice-1
 ========================================================
-- Have some idea of what you want.
-- Annotate a small amount of data
+incremental: true
+
+You have no data to start with.
+
+- Understand your requirements, and create a small, high-quality, manually inspected, labeled dataset (e.g., using label studio like tools)
 - Evaluate an off-the shelf solution if it exists. 
-- Evaluate transfer learning if a similar model is available
+- Create automatically labeled data and build a model using weak supervision, evaluating with your high quality test data.
 
 Practical Advice-2
 ========================================================
-- Weak supervision
-- Semi-supervised learning
-- Active learning
-- More elaborate models
+incremental: true
 
+You managed to get some labeled data through automatic labeling or other means.
+Then, what?
+- Evaluate transfer learning if a similar model is available
+- Semi-supervised learning and Active learning
+
+Slowly, you built up a large collection of labeled or pseudo-labeled data:
+- Explore more sophisticated ML/DL models
 
 A working example
 ========================================================
@@ -257,6 +306,55 @@ https://github.com/nishkalavallabhi/SfSCourseJan2021/blob/main/slides-tex/NLPWit
 No data NLP: using off the shelf solutions
 ========================================================
 type: section
+
+Sentiment Analysis with Azure Text Analytics
+========================================================
+
+[source](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis?tabs=version-3-1)
+
+- "Sentiment Analysis in version 3.x applies sentiment labels to text, which are returned at a sentence and document level, with a confidence score for each."
+
+- labels: positive, negative, mixed, neutral
+
+- "Confidence scores range from 1 to 0. Scores closer to 1 indicate a higher confidence in the label's classification, while lower scores indicate lower confidence."
+
+Sentiment Analysis with Azure Text Analytics
+========================================================
+Things to think about: 
+- We need a model with only positive/negative labels. What should we do about mixed/neutral? 
+- Is this a permanent solution, or should we start thinking about collecting labeled data eventually?
+
+No Data NLP - Example
+========================================================
+![azure1](figures/azure1.png)
+
+![azure1](figures/azure2.png)
+
+No Data NLP - Example
+========================================================
+![azure1](figures/azure3.png)
+
+![azure1](figures/azure4.png)
+
+No Data NLP - Conclusion
+========================================================
+
+Advantage: 
+- You don't have to worry about setting stuff up, building and maintaining the sentiment analyzer etc.
+- You can quickly get an MVP up and running.
+
+Disadvantages:
+- This only works if you have problem that exactly meets the specifications of such an available API
+- No possibility of customization/modification
+- Depending on how much you use, costs may escalate
+- You still have to think whether this approach is a long term solution for your problem.
+
+
+Weak supervision, with Snorkel: an example
+========================================================
+
+
+
 
 <!-- google cloud content classification example and Bing MT? -->
 <!-- A slide on advantages and disadvantages -->
