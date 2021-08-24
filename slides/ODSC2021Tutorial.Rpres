@@ -345,7 +345,7 @@ Advantage:
 
 Disadvantages:
 - This only works if you have problem that exactly meets the specifications of such an available API
-- No possibility of customization/modification
+- No possibility of customization/modification, we don't know what it is doing.
 - Depending on how much you use, costs may escalate
 - You still have to think whether this approach is a long term solution for your problem.
 
@@ -354,9 +354,101 @@ Weak supervision, with Snorkel: an example
 ========================================================
 
 
+Why this works even up to this level?
+========================================================
+
+Pros and Cons
+========================================================
 
 
-<!-- google cloud content classification example and Bing MT? -->
-<!-- A slide on advantages and disadvantages -->
+What if I just have my labeled training set?
+========================================================
+How do these approaches compare to a more optimistic scenario where I have some labeled training data??
+
+- train our own classifier
+- fine-tune a large language model
+
+Training your own classifier
+========================================================
 
 
+Training our own classifier with our dataset
+========================================================
+
+Pros and Cons
+========================================================
+
+Transfer learning
+========================================================
+
+
+Transfer learning with our dataset
+========================================================
+![azure1](figures/transfer.png)
+
+**This gave me 92.7% accuracy on the test set!**   
+(code/finetune-sentiment.py in the repo)
+
+Why this works
+========================================================
+
+Pros and Cons
+========================================================
+
+Summary of all approaches
+========================================================
+<b>When we have don't have labeled training data</b>
+(but have labeled test set)
+<table>
+<tr>
+<td><b>Approach</b></td>
+<td><b>Accuracy</b></td>
+</tr>
+<tr>
+<td>predictions from Azure</td>
+<td>84%</td>
+</tr>
+<td>Weak supervision with Snorkel (with sentence transformers)</td>
+<td>73%</td>
+</tr>
+<tr>
+<td>Weak supervision + Data Augmentation</td>
+<td></td>
+</tr>
+</table>
+
+<b>When we have some amount of labeled training data (and with the same test set)</b>
+<table>
+<tr>
+<td><b>Approach</b></td>
+<td><b>Accuracy</b></td>
+</tr>
+<tr>
+<td>Training our own model (with bag of words features)</td>
+<td>74%</td>
+</tr>
+<tr>
+<td>Training our own model (with sentence transformers)</td>
+<td>88%</td>
+</tr>
+<tr>
+<td>Transfer learning</td>
+<td><b>92.7%</b></td>
+</tr>
+</table>
+(Note: We can use data augmentation here too, I leave it as an exercise!)
+
+Caveats
+========================================================
+- i only want to show a range of methods
+- so i took a relatively easy example
+- this is by no means a statement that azure works or transfer learning works.
+
+Summary
+========================================================
+
+Practical Advice- repeat
+========================================================
+
+Thank you
+========================================================
