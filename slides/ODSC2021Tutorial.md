@@ -18,8 +18,8 @@ Tutorial Overview
 ========================================================
 - NLP: Overview
 - Collecting, Labeling and Augmenting datasets
-- Modeling with small datasets: an overview
-- A case study: code walk through  
+- Modeling with small datasets - a few scenarios
+- A case study (with code examples)
 - Conclusion
 (I will talk first, show next.)
 
@@ -65,18 +65,20 @@ source: Chapter 2 in practicalnlp.ai
 Data and NLP
 ========================================================
   - The starting point of any modern NLP system is data. 
-  - However, in many research and real-world scenarios, when we encounter a new problem, we don't have such ready made datasets that suit our need. 
+  - However, we often don't have ready made datasets that suit our need. 
   - What should we do, then? 
-  - Why do we need data, anyway?
-  - What kind of data do we really need for NLP? 
-  - how do we collect such data?
+     - Why do we need data, anyway?
+     - What kind of data do we really need for NLP? 
+     - how do we collect such data?
 
 So, why do we need data, anyway?
 ========================================================
 incremental: true
 
   - Modern NLP is heavily machine learning driven and machine learning approaches typically require lots and lots of examples to "train" on and learn a task.
+  
   - Assuming we are "engineering" everything manually, we still need some kind of curated data to evaluate our approach for its accuracy and coverage.
+  
  - Even if we are just using some off-the-shelf solution, we need to know how good it is for our scenario!
  
 - So, good quality datasets are very (very) important for building any NLP system. 
@@ -84,9 +86,10 @@ incremental: true
 What kind of data do we really need for NLP?
 ========================================================
 - Different kinds of NLP systems need different kinds of data. 
-- Sometimes, all we need are large collections of documents without any additional information (e.g., tasks such as language modeling, topic modeling etc). 
-- But in many cases, we need large collections of labeled data i.e., input -> output pairs. 
-- Here are some examples:
+
+- Sometimes, all we need are large collections of documents without any additional information 
+
+- But in many cases, we need large collections of labeled data i.e., input -> output pairs. e.g.,
     - sentence-translated sentence pairs (machine translation)
     - spam/non-spam emails (an example text classification)
     - question-answer pairs
@@ -96,12 +99,15 @@ What kind of data do we really need for NLP?
 What kind of data do we need? - 2
 ========================================================
    - Quantity: Typically, "learning" methods are data hungry. The more, the better, although it may plateau at some point. (What is large?)
+   
     - Quality: Garbage in $->$ Garbage out. We can't take **anything** we can lay hands on. (Why?) 
+   
     - Data without ethical concerns such as using data without consent, keeping personally identifiable information, racial/gender bias in training examples etc. (Why is this important?)
+   
     - Variety: Data that is of the same kind as our end use case (e.g., legal docs for legal use cases) (Why?) 
     
     
-Collecting, Labeling and Augmenting datasets
+Collecting, Labeling, Augmenting datasets
 ========================================================
 type: section
     
@@ -113,12 +119,12 @@ incremental: true
       - scraping websites (forums, wikipedia, news etc)
       - social media content (tweets etc)
       - internal data (logs, customer support messages etc)
-    - advantage:
-      - We don't have to setup new labeling mechanisms
-      - potentially large amounts of data can be collected
+    - advantages:
+        - We don't have to setup new labeling mechanisms
+        - potentially large amounts of data can be collected
     - disadvantage:
-      - quality control?
-    - Note that this is not your most common scenario in real world
+        - quality control?
+  - Note that this is not your most common scenario in real world
       
 How do we obtain labeled data? - 2
 ========================================================
@@ -126,9 +132,10 @@ How do we obtain labeled data? - 2
 collect your own data: surveys, user studies, crowd sourcing etc. 
    
 <img src="figures/Doccano.png" alt="doccano" height="250" width="600"/>
-<p style="font-size:30px">source:<a href="https://github.com/doccano/doccano">Doccano</a></p>
+(source: [Doccano](https://github.com/doccano/doccano))
 
 - Advantage: Best suited to our requirements
+
 - Disadvantage: It can be very expensive/time consuming to get large amounts needed for ML/DL models. 
 
 Label studio-Example
@@ -151,20 +158,19 @@ Label studio - export the labeled dataset
 ========================================================
 ![label studio](figures/label-studio-5.png)
 
-Data labeling with Label Studio - input and output
+Label Studio - input and output
 ========================================================
 ![label studio](figures/label-studio-0.png)
 ![label studio](figures/label-studio-last.png)
 
-
-Data labeling - conclusion
+Labeling data - conclusion
 ========================================================
 - I just showed a simple example, but there are a whole lot of annotation support tools for NLP tasks.
 - [This listing by Doccano](https://github.com/doccano/awesome-annotation-tools) provides a comparison in terms of features, pricing, and the kind of NLP tasks that the tools support. 
 
 Creating more data: Data Augmentation 
 ========================================================
-Generate new data by changing existing (labeled) data slightly.
+Generate new data by modifying existing (labeled) data by:
 - Replacing words with synonyms
 - Back translation 
 - Random insertion/deletion of words
@@ -193,10 +199,27 @@ Back translation
 
 <!-- may be add some code examples here? --> 
 
-
-Modeling with small(-er) datasets: Issues
+Data Augmentation: Conclusion
 ========================================================
-- We can't go too far with small datasets, though. 
+
+- Data augmentation has been shown to be useful in a range of NLP tasks such as text classification, machine translation, question answering etc.
+
+- It is commonly used in real-world scenarios (based on what I hear from others in the community!)
+
+- [Data augmentation techniques for NLP](https://github.com/styfeng/DataAug4NLP) - survey with lot of references
+
+- Some code examples: [nlpaug examples](https://github.com/makcedward/nlpaug/blob/master/example/textual_augmenter.ipynb)
+
+- A data augmentation tutorial from [Snorkel](https://www.snorkel.org/use-cases/02-spam-data-augmentation-tutorial)
+
+Modeling with small datasets
+========================================================
+type: section
+    
+
+Modeling with small(-er) datasets: challenges
+========================================================
+- We can't go too far with traditional ML/DL, with small datasets ...even after augmentation 
 
 [http://ai.stanford.edu/blog/weak-supervision](Stanford AI Lab blog)
 
@@ -211,8 +234,6 @@ Generally, most 'learning' methods used in NLP are data hungry. However, it is t
 Sometimes, we may have to update existing labels to suit changed guidelines or just update the dataset etc. (not so uncommon in real world). How do we handle the costs/time taken? 
 
 "Weak supervision" refers to a machine learning approach which relies on "imprecise" training data, which is potentially "generated" automatically. 
-
-An approach: write code based on observed patterns in data to label subsets of unlabeled data.... and then use this code to create labeled training data for our ML model
 
 
 "Practical" Weak Supervision -1
@@ -271,10 +292,10 @@ Practical Advice-1
 ========================================================
 incremental: true
 
-You have no data to start with.
+Let us say you have no data to start with. What is the way forward?
 
 - Understand your requirements, and create a small, high-quality, manually inspected, labeled dataset (e.g., using label studio like tools)
-- Evaluate an off-the shelf solution if it exists. 
+- Evaluate an off-the shelf solution if it exists (e.g., a cloud service provider)
 - Create automatically labeled data and build a model using weak supervision, evaluating with your high quality test data.
 
 Practical Advice-2
@@ -282,26 +303,55 @@ Practical Advice-2
 incremental: true
 
 You managed to get some labeled data through automatic labeling or other means.
+
+You also managed a baseline weakly supervised model. 
+
 Then, what?
+
 - Evaluate transfer learning if a similar model is available
-- Semi-supervised learning and Active learning
+- Consider if Semi-supervised learning and/or Active learning will be useful
 
 Slowly, you built up a large collection of labeled or pseudo-labeled data:
 - Explore more sophisticated ML/DL models
 
-A working example
+A case study
 ========================================================
-- problem: text classification ... sentiment classification
-- why I chose such a common one?
-- no data NLP: google cloud example - how good is it on the test sentences?
-- transfer learning - use an existing pre-trained model or sentiment model
-- weak supervision - snorkel
-- comparison with a "regular" scenario
+type: section
 
+The Problem
+========================================================
+incremental: true
 
-<!--
-https://github.com/nishkalavallabhi/SfSCourseJan2021/blob/main/slides-tex/NLPWithoutData-DataLabeling.tex
--->
+- **Problem:** Sentiment classification of sentences into positive and negative
+- **Nature of the dataset:** Labeled. I will use it as if a part of it were unlabeled, in some of the examples that follow. 
+- **why did I chose such a common problem?**
+    - it is common, so we will find some ready made solutions to compare with automatic labeling
+    - it is common, but the dataset I chose makes it slightly difficult to use off the shelf solutions. 
+    
+The Dataset
+========================================================
+[Sentiment Labelled Sentences Dataset](http://archive.ics.uci.edu/ml/datasets/Sentiment+Labelled+Sentences) from UCI repository.
+
+- It contains sentences with one of the two labels: 1 (positive), 0 (negative)
+
+- The sentences come from three websites: amazon, imdb, yelp.
+
+- For each website, there are 500 positive, 500 negative sentences.
+
+- I will use the amazon part (500+500 - 1000 labeled examples) as my test data everywhere.  
+
+(in real world, you may have to create such a dataset using tools like label studio/doccano etc, or if you are lucky, you already have internal labeled data)
+
+Methods
+========================================================
+No labeled data scenario (I take the training data, but without labels)
+- using a cloud service provider's sentiment analyzer
+- using an off the shelf Python library (free)
+- using weak supervision
+
+Comparing with labeled data scenario (I take the training data, with labels)
+- train your sentiment classifier from scratch
+- transfer learning: use an existing pre-trained language model and **tune** it using your training data
 
 No data NLP: using off the shelf solutions
 ========================================================
@@ -324,76 +374,208 @@ Things to think about:
 - We need a model with only positive/negative labels. What should we do about mixed/neutral? 
 - Is this a permanent solution, or should we start thinking about collecting labeled data eventually?
 
-No Data NLP - Example
+Sentiment Analysis with Azure Text Analytics
 ========================================================
 ![azure1](figures/azure1.png)
 
 ![azure1](figures/azure2.png)
 
-No Data NLP - Example
+(code/CloudServiceExample.ipynb)
+
+Sentiment Analysis with Azure Text Analytics
 ========================================================
 ![azure1](figures/azure3.png)
 
 ![azure1](figures/azure4.png)
 
+
+Sentiment Analysis with TextBlob
+========================================================
+![textblob](figures/textblobcode.png)
+
+![textblob](figures/textblob.png)
+
+(code/textblobsentiment.py)
+
+
 No Data NLP - Conclusion
 ========================================================
 
-Advantage: 
+We get over 80% accuracy with Azure, good start! (TextBlob is not as good, but we have options!)
+
+Pros: 
 - You don't have to worry about setting stuff up, building and maintaining the sentiment analyzer etc.
 - You can quickly get an MVP up and running.
 
-Disadvantages:
+Cons:
 - This only works if you have problem that exactly meets the specifications of such an available API
 - No possibility of customization/modification, we don't know what it is doing.
 - Depending on how much you use, costs may escalate
 - You still have to think whether this approach is a long term solution for your problem.
 
 
-Weak supervision, with Snorkel: an example
+Weak supervision, with Snorkel
 ========================================================
 
+Note: I am using "unlabeled" training data to programmatically create labels for it
 
-Why this works even up to this level?
+How?: 
+- Write a few labeling functions based on heuristics (I wrote using existing lists of positive/negative words)
+- learn a label model, from the output of such labeling functions (Snorkel's learner)
+- convert learnt label distribution into training data ready to be used by any ML/DL approach. 
+- feature representation for text:
+   - bag of words
+   - sentence transformers (sbert.net)
+   
+(code/AutomaticaDataLabeling.ipynb)
+
+Labeling functions with Snorkel
+========================================================
+![weaks](figures/snorkel1.png)
+
+(where the poswords/negwords came from a standard list)
+
+
+Labeling functions with Snorkel: How good are they
+========================================================
+![weaks](figures/snorkel-lfanal.png)
+
+- Coverage: The fraction of the dataset the LF labels
+- Overlaps: The fraction of the dataset where this LF and at least one other LF label
+- Conflicts: The fraction of the dataset where this LF and at least one other LF label and disagree
+
+(Clearly, these are not sufficient/good enough LFs, but I am still going ahead, as I am using this only as an illustration!)
+
+Learning a label model
 ========================================================
 
+Step 1: Convert your (unlabeled) train and (labeled) test into the feature representation based on these LFs.
+
+```python
+applier = PandasLFApplier(lfs=lfs)
+L_train = applier.apply(df=df_train)
+L_test = applier.apply(df=df_test)
+```
+
+Step 2: Our goal is now to convert the labels from our LFs into a single noise-aware probabilistic (or confidence-weighted) label per data point. 
+
+- An easy way: majority vote on a per-data point basis: if more LFs voted POS than NEG for a data point, label it POS (and vice versa)
+
+- Snorkel also has a more advanced label model, to learn such confidence weighted label represnetations, though.
+
+Learning a label model
+========================================================
+
+![weaks](figures/snorkel-labelmodel.png)
+
+Since my LFs are not that good (and too few?), we don't see much difference between MajorityLabel or LabelModel, with the former being slightly better. 
+
+So, why can't we just use this as the final labeling model?? 
+
+From label model to training data
+========================================================
+
+- If we use this approach, the data points the model will "ABSTAIN" from labeling some data points. What do we do with them?
+
+- Instead, we will use the outputs of the LabelModel as training labels to train a classifier which can generalize beyond the labeling function outputs.
+
+Step 1: Filter out the unlabeled data points:
+
+```python
+from snorkel.labeling import filter_unlabeled_dataframe
+
+df_train_filtered, probs_train_filtered = filter_unlabeled_dataframe(
+    X=df_train, y=probs_train, L=L_train
+)
+
+from snorkel.utils import probs_to_preds
+preds_train_filtered = probs_to_preds(probs=probs_train_filtered)
+```
+
+Sentiment classification with this "generated" training data
+========================================================
+(tested with the same test set as before)
+
+<table cellspacing="0" cellpadding="0">
+<tr><td>With Bag of words features</td>
+
+<td><img src="figures/snorkel-classification1.png"></td>
+</tr>
+
+<tr><td>with features from a transformer model</td>
+
+<td><img src="figures/snorkel-classification2.png")"></td>
+</tr>
+</table>
+
+**(We managed to get to 73% without an actual labeled training dataset!)**
 Pros and Cons
 ========================================================
+incremental:true
+
+Pros:
+- Quick way to generate (labeled) training data programmatically. 
+- Tried and tested, used in many industry usecases for NLP.
+- Useful to build a first solution quickly. (73% is not a bad start without data!)
+
+Cons:
+- We have to develop the labeled functions, and it won't be easy unless we have clear knowledge about the problem.
+- This may not work very well for all kinds of NLP problems. 
 
 
 What if I just have my labeled training set?
 ========================================================
-How do these approaches compare to a more optimistic scenario where I have some labeled training data??
+How do these approaches compare to a more optimistic scenario where I actually have some labeled training data??
 
-- train our own classifier
-- fine-tune a large language model
+We can do two things in this case: 
+- train our own classifier with our training data
+- fine-tune a large language model using our training data
 
-Training your own classifier
+(and test with the same test set as before!)
+
+Training your own classifier -1 (with bag of words)
 ========================================================
+![ourown](figures/bow.png)
+
+(code/withLabeledTrainingData.ipynb)
 
 
-Training our own classifier with our dataset
+Training our own classifier-2 (with sbert)
 ========================================================
+![ourown](figures/sbert.png)
 
-Pros and Cons
-========================================================
 
-Transfer learning
-========================================================
-
+(code/withLabeledTrainingData.ipynb)
 
 Transfer learning with our dataset
 ========================================================
-![azure1](figures/transfer.png)
+incremental: true
+
+- intuition: When I used sbert features earlier, I just used the representations a large language model learnt (using some large data set, on some tasks) **"as is"**.
+
+- The goal of fine-tuning is to take this large language model as its base, and "re-train" it to suit our classification task, using our training data. 
+
+- The pre-trained model's weights are then altered ("fine-tuned") while training for the task
+
+- while all this may sound complex, there are easy to use implementations of transfer learning for many NLP tasks. 
+
+Transfer learning with our dataset
+========================================================
+![transfer](figures/transfer.png)
 
 **This gave me 92.7% accuracy on the test set!**   
-(code/finetune-sentiment.py in the repo)
+(code/finetune-sentiment.py)
 
-Why this works
+Pros and Cons of training our own models
 ========================================================
 
-Pros and Cons
-========================================================
+Pros:
+- We have control over the modeling process.
+- We may get better performance, as this is a custom made model for us. 
+
+Cons:
+- We need large enough labeled training sets as a starting point. 
+- We also need more knowledge and expertise, and know what to experiment and what to discard. 
 
 Summary of all approaches
 ========================================================
@@ -408,12 +590,12 @@ Summary of all approaches
 <td>predictions from Azure</td>
 <td>84%</td>
 </tr>
+<tr>
+<td>predictions from TextBlob</td>
+<td>69%</td>
+</tr>
 <td>Weak supervision with Snorkel (with sentence transformers)</td>
 <td>73%</td>
-</tr>
-<tr>
-<td>Weak supervision + Data Augmentation</td>
-<td></td>
 </tr>
 </table>
 
@@ -436,19 +618,65 @@ Summary of all approaches
 <td><b>92.7%</b></td>
 </tr>
 </table>
-(Note: We can use data augmentation here too, I leave it as an exercise!)
+(Note: We can use data augmentation in scenarios from both tables, I leave it as an exercise!)
 
-Caveats
+Caveats on the approach I took
 ========================================================
-- i only want to show a range of methods
+incremental: true
+
+- I only want to show a range of methods to apply when you encounter a "no labeled data" scenario.
+
 - so i took a relatively easy example
+
 - this is by no means a statement that azure works or transfer learning works.
 
-Summary
+- with careful heuristics, even weak supervision may give you much better performance than what you saw in this example!
+
+A summary of what we discussed so far
 ========================================================
 
-Practical Advice- repeat
+- different means of collecting data for NLP
+- manual labeling to compile a high quality test dataset
+- using off the shelf solutions, if available, and evaluating them
+- using weak supervision, to build a labeled dataset automatically, and then training a ML/DL model
+- how does this compare with the case when we have some labeled dataset (regular classification, transfer learning)
+- an overview of other methods: (semi-supervised, active learning)
+
+Revisiting: Practical Advice-1 
+========================================================
+incremental: true
+
+Let us say you have no data to start with. What is the way forward?
+
+- Understand your requirements, and create a small, high-quality, manually inspected, labeled dataset (e.g., using label studio like tools)
+- Evaluate an off-the shelf solution if it exists (e.g., a cloud service provider)
+- Create automatically labeled data and build a model using weak supervision, evaluating with your high quality test data.
+
+Revisiting: Practical Advice-2
+========================================================
+incremental: true
+
+You managed to get some labeled data through automatic labeling or other means.
+
+You also managed a baseline weakly supervised model. 
+
+Then, what?
+
+- Evaluate transfer learning if a similar model is available
+- Consider if Semi-supervised learning and/or Active learning will be useful
+
+Slowly, you built up a large collection of labeled or pseudo-labeled data:
+- Explore more sophisticated ML/DL models
+
+
+Thank you!
 ========================================================
 
-Thank you
-========================================================
+I hope this tutorial gave you some overview of what to do when you encounter a new NLP task, without labeled data!
+
+
+github repo: [https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial](https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial)
+
+these slides: [https://rpubs.com/vbsowmya/odsc2021](https://rpubs.com/vbsowmya/odsc2021)
+
+my contact: firstname.lastname at nrc-cnrc dot gc dot ca
