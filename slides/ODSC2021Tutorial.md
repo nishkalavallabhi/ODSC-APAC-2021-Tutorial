@@ -119,11 +119,10 @@ incremental: true
       - scraping websites (forums, wikipedia, news etc)
       - social media content (tweets etc)
       - internal data (logs, customer support messages etc)
-    - advantages:
-        - We don't have to setup new labeling mechanisms
+   - advantages:  
+        - We don't have to setup new labeling mechanisms  
         - potentially large amounts of data can be collected
-    - disadvantage:
-        - quality control?
+   - disadvantage: quality control?
   - Note that this is not your most common scenario in real world
       
 How do we obtain labeled data? - 2
@@ -332,26 +331,35 @@ The Dataset
 ========================================================
 [Sentiment Labelled Sentences Dataset](http://archive.ics.uci.edu/ml/datasets/Sentiment+Labelled+Sentences) from UCI repository.
 
-- It contains sentences with one of the two labels: 1 (positive), 0 (negative)
+- sentences with one of the two labels: 1 (positive), 0 (negative)
 
 - The sentences come from three websites: amazon, imdb, yelp.
 
-- For each website, there are 500 positive, 500 negative sentences.
+- For each website, there are 500 sentences per category.
 
 - I will use the amazon part (500+500 - 1000 labeled examples) as my test data everywhere.  
 
 (in real world, you may have to create such a dataset using tools like label studio/doccano etc, or if you are lucky, you already have internal labeled data)
 
-Methods
+Methods: Modeling
 ========================================================
-No labeled data scenario (I take the training data, but without labels)
-- using a cloud service provider's sentiment analyzer
-- using an off the shelf Python library (free)
-- using weak supervision
+No labeled data scenario (I take the training data, but without labels)  
+  - using a cloud service provider's sentiment analyzer
+  - using an off the shelf Python library (free)  
+  - using weak supervision
 
 Comparing with labeled data scenario (I take the training data, with labels)
 - train your sentiment classifier from scratch
 - transfer learning: use an existing pre-trained language model and **tune** it using your training data
+
+Methods: Feature representation
+========================================================
+
+(for weak supervision model, or when we build other classifiers with labeled data)
+   - bag of words
+   - sentence transformers (sbert.net)
+   
+Why? - to illustrate one simple representation, one state of the art neural text representation.
 
 No data NLP: using off the shelf solutions
 ========================================================
@@ -387,6 +395,7 @@ Sentiment Analysis with Azure Text Analytics
 ![azure1](figures/azure3.png)
 
 ![azure1](figures/azure4.png)
+(About 100 instances from my test set are labeled either "netural" or "mixed" as per Azure.)
 
 
 Sentiment Analysis with TextBlob
@@ -401,17 +410,15 @@ Sentiment Analysis with TextBlob
 No Data NLP - Conclusion
 ========================================================
 
-We get over 80% accuracy with Azure, good start! (TextBlob is not as good, but we have options!)
+We get a good start: over 80% accuracy with Azure
 
-Pros: 
-- You don't have to worry about setting stuff up, building and maintaining the sentiment analyzer etc.
-- You can quickly get an MVP up and running.
+Pros: You don't have to worry about setting stuff up, building and maintaining the sentiment analyzer etc. You can quickly get an MVP up and running.
 
 Cons:
 - This only works if you have problem that exactly meets the specifications of such an available API
 - No possibility of customization/modification, we don't know what it is doing.
 - Depending on how much you use, costs may escalate
-- You still have to think whether this approach is a long term solution for your problem.
+- Will this be a long term solution for your problem?
 
 
 Weak supervision, with Snorkel
@@ -423,11 +430,6 @@ How?:
 - Write a few labeling functions based on heuristics (I wrote using existing lists of positive/negative words)
 - learn a label model, from the output of such labeling functions (Snorkel's learner)
 - convert learnt label distribution into training data ready to be used by any ML/DL approach. 
-- feature representation for text:
-   - bag of words
-   - sentence transformers (sbert.net)
-   
-(code/AutomaticaDataLabeling.ipynb)
 
 Labeling functions with Snorkel
 ========================================================
@@ -457,6 +459,8 @@ L_train = applier.apply(df=df_train)
 L_test = applier.apply(df=df_test)
 ```
 
+Learning a label model
+========================================================
 Step 2: Our goal is now to convert the labels from our LFs into a single noise-aware probabilistic (or confidence-weighted) label per data point. 
 
 - An easy way: majority vote on a per-data point basis: if more LFs voted POS than NEG for a data point, label it POS (and vice versa)
@@ -479,6 +483,8 @@ From label model to training data
 
 - Instead, we will use the outputs of the LabelModel as training labels to train a classifier which can generalize beyond the labeling function outputs.
 
+From label model to training data
+========================================================
 Step 1: Filter out the unlabeled data points:
 
 ```python
@@ -494,21 +500,16 @@ preds_train_filtered = probs_to_preds(probs=probs_train_filtered)
 
 Sentiment classification with this "generated" training data
 ========================================================
-(tested with the same test set as before)
-
 <table cellspacing="0" cellpadding="0">
 <tr><td>With Bag of words features</td>
-
 <td><img src="figures/snorkel-classification1.png"></td>
 </tr>
-
 <tr><td>with features from a transformer model</td>
-
 <td><img src="figures/snorkel-classification2.png")"></td>
 </tr>
 </table>
-
 **(We managed to get to 73% without an actual labeled training dataset!)**
+
 Pros and Cons
 ========================================================
 incremental:true
