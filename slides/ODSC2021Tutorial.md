@@ -21,7 +21,6 @@ Tutorial Overview
 - Modeling with small datasets - a few scenarios
 - A case study (with code examples)
 - Conclusion
-(I will talk first, show next.)
 
 Code, slides: [https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial](https://github.com/nishkalavallabhi/ODSC-APAC-2021-Tutorial)
 
@@ -45,7 +44,7 @@ type: section
 
 
 ========================================================
-![EverydayNLP](figures/everydaynlp.png) 
+<img src="figures/everydaynlp.png" alt="everyday" height="600" width="1200"/> 
 
 
 Some common NLP use cases
@@ -75,11 +74,11 @@ So, why do we need data, anyway?
 ========================================================
 incremental: true
 
-  - Modern NLP is heavily machine learning driven and machine learning approaches typically require lots and lots of examples to "train" on and learn a task.
+- Modern NLP is heavily machine learning driven and machine learning approaches typically require lots and lots of examples to "train" on and learn a task.
   
-  - Assuming we are "engineering" everything manually, we still need some kind of curated data to evaluate our approach for its accuracy and coverage.
+- Assuming we are "engineering" everything manually, we still need some kind of curated data to evaluate our approach for its accuracy and coverage.
   
- - Even if we are just using some off-the-shelf solution, we need to know how good it is for our scenario!
+- Even if we are just using some off-the-shelf solution, we need to know how good it is for our scenario!
  
 - So, good quality datasets are very (very) important for building any NLP system. 
 
@@ -89,7 +88,7 @@ What kind of data do we really need for NLP?
 
 - Sometimes, all we need are large collections of documents without any additional information 
 
-- But in many cases, we need large collections of labeled data i.e., input -> output pairs. e.g.,
+- But in many cases, we need large collections of labeled data i.e., source -> target pairs. e.g.,
     - sentence-translated sentence pairs (machine translation)
     - spam/non-spam emails (an example text classification)
     - question-answer pairs
@@ -100,11 +99,11 @@ What kind of data do we need? - 2
 ========================================================
    - Quantity: Typically, "learning" methods are data hungry. The more, the better, although it may plateau at some point. (What is large?)
    
-    - Quality: Garbage in $->$ Garbage out. We can't take **anything** we can lay hands on. (Why?) 
+    - Quality: Garbage in -> Garbage out. We can't take **anything** we can lay hands on. (Why?) 
    
-    - Data without ethical concerns such as using data without consent, keeping personally identifiable information, racial/gender bias in training examples etc. (Why is this important?)
+    - Data without ethics and privacy concerns such as using data without consent, keeping personally identifiable information, racial/gender bias in training examples etc. (Why is this important?)
    
-    - Variety: Data that is of the same kind as our end use case (e.g., legal docs for legal use cases) (Why?) 
+    - Variety: e.g., legal domain docs for legal use cases) (Why?) 
     
     
 Collecting, Labeling, Augmenting datasets
@@ -115,14 +114,14 @@ How do we obtain labeled data? - 1
 ========================================================
 incremental: true
 
-   - use available data sets with some labeling:
+  - use available data sets with some labeling, if they suit your need:
       - scraping websites (forums, wikipedia, news etc)
       - social media content (tweets etc)
       - internal data (logs, customer support messages etc)
-   - advantages:  
+  - advantages:  
         - We don't have to setup new labeling mechanisms  
         - potentially large amounts of data can be collected
-   - disadvantage: quality control?
+  - disadvantage: quality control?
   - Note that this is not your most common scenario in real world
       
 How do we obtain labeled data? - 2
@@ -133,11 +132,11 @@ collect your own data: surveys, user studies, crowd sourcing etc.
 <img src="figures/Doccano.png" alt="doccano" height="250" width="600"/>
 (source: [Doccano](https://github.com/doccano/doccano))
 
-- Advantage: Best suited to our requirements
+- Advantage: We can collect data suited to our requirements
 
 - Disadvantage: It can be very expensive/time consuming to get large amounts needed for ML/DL models. 
 
-Label studio-Example
+Annotating our own data: Label studio
 ========================================================
 ![label studio](figures/label-studio-1.png)
 
@@ -220,7 +219,7 @@ Modeling with small(-er) datasets: challenges
 ========================================================
 - We can't go too far with traditional ML/DL, with small datasets ...even after augmentation 
 
-[http://ai.stanford.edu/blog/weak-supervision](Stanford AI Lab blog)
+[http://ai.stanford.edu/blog/weak-supervision](source)
 
 ![methods](figures/methods.png)
 
@@ -323,7 +322,7 @@ incremental: true
 
 - **Problem:** Sentiment classification of sentences into positive and negative
 - **Nature of the dataset:** Labeled. I will use it as if a part of it were unlabeled, in some of the examples that follow. 
-- **why did I chose such a common problem?**
+- **why did I choose such a common problem?**
     - it is common, so we will find some ready made solutions to compare with automatic labeling
     - it is common, but the dataset I chose makes it slightly difficult to use off the shelf solutions. 
     
@@ -343,23 +342,25 @@ The Dataset
 
 Methods: Modeling
 ========================================================
-No labeled data scenario (I take the training data, but without labels)  
+No labeled data scenario (with just labeled test data)  
   - using a cloud service provider's sentiment analyzer
   - using an off the shelf Python library (free)  
-  - using weak supervision
+  
+  - using weak supervision (unlabeled train + labeled test data)
 
-Comparing with labeled data scenario (I take the training data, with labels)
+Comparing with labeled data scenario 
+(labeled train + labeled test)
 - train your sentiment classifier from scratch
 - transfer learning: use an existing pre-trained language model and **tune** it using your training data
 
 Methods: Feature representation
 ========================================================
 
-(for weak supervision model, or when we build other classifiers with labeled data)
+(for weak supervision model, and when we build other classifiers with labeled data)
    - bag of words
    - sentence transformers (sbert.net)
    
-Why? - to illustrate one simple representation, one state of the art neural text representation.
+Why? - to illustrate one simple text representation, one state of the art neural text representation.
 
 No data NLP: using off the shelf solutions
 ========================================================
@@ -640,8 +641,20 @@ A summary of what we discussed so far
 - manual labeling to compile a high quality test dataset
 - using off the shelf solutions, if available, and evaluating them
 - using weak supervision, to build a labeled dataset automatically, and then training a ML/DL model
-- how does this compare with the case when we have some labeled dataset (regular classification, transfer learning)
+- how this compares with the case when we have some labeled dataset (regular classification, transfer learning)
 - an overview of other methods: (semi-supervised, active learning)
+
+There are a lot of things I don't talk about!
+========================================================
+
+- feature engineering, text representation
+- models, evaluation, comparisons
+- testing models
+- deploying and monitoring NLP systems
+- updating models
+
+etc
+etc
 
 Revisiting: Practical Advice-1 
 ========================================================

@@ -1,6 +1,0 @@
-
-POS/NEG words
-
-vader-lexicon
-
-affective emotions: http://web.eecs.umich.edu/~mihalcea/affectivetext/
