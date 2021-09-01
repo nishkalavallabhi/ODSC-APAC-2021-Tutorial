@@ -1,0 +1,11 @@
+numpy==1.13.3
+matplotlib==3.1.0
+torch==1.7.0
+textblob==0.15.3
+transformers==4.3.3
+pandas==1.1.5
+snorkel==0.9.6
+azure_common==1.1.27
+datasets==1.11.0
+sentence_transformers==2.0.0
+scikit_learn==0.24.2
